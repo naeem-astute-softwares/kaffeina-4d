@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <title>Kaffeina Brand Deck 4D</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f4f4f7;
+      --card-bg: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #6f2dbd;
+      --border: #e5e7eb;
+      --radius: 24px;
+      --shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+      --yes: #111827;
+      --no: #e5e7eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 40%, #f4f4f7 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .shell {
+      width: 100%;
+      max-width: 960px;
+      background: #f9fafb;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      padding: 24px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    header .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header img {
+      height: 40px;
+      width: auto;
+    }
+    header .brand-text {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+    header .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    header .tagline {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 20px;
+    }
+    @media (max-width: 780px) {
+      main { grid-template-columns: 1fr; }
+    }
+
+    .card-shell {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 32px 32px 28px;
+      box-shadow: inset 0 0 0 1px var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(111,45,189,0.06), transparent 60%);
+      pointer-events: none;
+    }
+
+    .card-top-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+    .card-word {
+      font-size: 40px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .card-sub {
+      font-size: 18px;
+      line-height: 1.4;
+      max-width: 360px;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .card-actions-left {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      border-radius: 999px;
+      padding: 10px 24px;
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.04s ease, box-shadow 0.16s ease, background 0.16s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn:active { transform: translateY(1px); box-shadow: none; }
+    .btn-primary {
+      background: var(--yes);
+      color: #f9fafb;
+      box-shadow: 0 10px 20px rgba(15,23,42,0.4);
+    }
+    .btn-secondary {
+      background: #f9fafb;
+      color: #111827;
+      border-color: var(--border);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border-color: transparent;
+      font-size: 12px;
+      padding-inline: 0;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .mini-score {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .side-box {
+      border-radius: 20px;
+      background: #111827;
+      color: #f9fafb;
+      padding: 18px 18px 16px;
+    }
+    .side-box.light {
+      background: #ffffff;
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px var(--border);
+    }
+    .side-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .side-desc {
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+    .side-desc.light {
+      color: var(--muted);
+    }
+
+    .progress-line {
+      margin-top: 12px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bar {
+      height: 6px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .bar span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6f2dbd, #9b5de5);
+    }
+
+    /* Schermata iniziale / finale */
+    .centered {
+      text-align: left;
+    }
+    .center-big {
+      font-size: 32px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 8px;
+    }
+    .center-sub {
+      font-size: 18px;
+      max-width: 360px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .final-score {
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 18px;
+    }
+    .final-score span {
+      display: inline-block;
+      min-width: 36px;
+      text-align: center;
+    }
+
+    .ai-box {
+      margin-top: 18px;
+      border-radius: 16px;
+      background: #111827;
+      color: #f9fafb;
+      padding: 14px 16px;
+      font-size: 12px;
+    }
+    .ai-output {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #020617;
+      max-height: 260px;
+      overflow: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <img src="./assets/logo.png" alt="Brand Deck 4D" />
+        <div>
+          <div class="brand-text">brand deck 4d</div>
+          <div class="brand-title">Mazzo di carte per l’identità di marca</div>
+        </div>
+      </div>
+      <div class="tagline">Where Ideas Come to Life. Anche nella strategia dei brand.</div>
+    </header>
+
+    <main>
+      <!-- AREA CARTE / SCHERMATE -->
+      <section class="card-shell" id="cardShell">
+        <div class="card-content" id="screenIntro">
+          <div class="card-top-label">Ecco il tuo mazzo</div>
+          <div class="centered">
+            <div class="center-big">Inizia!</div>
+            <p class="center-sub">
+              Guarda ogni carta e decidi se tenerla o scartarla.<br/>
+              Pensa al brand come se fosse una persona: lo rappresenta davvero?
+            </p>
+          </div>
+        </div>
+
+        <div class="card-content" id="screenGame" style="display:none">
+          <div class="card-top-label">Carta</div>
+          <div>
+            <div class="card-word" id="cardWord">AFFIDABILE</div>
+            <div class="card-sub" id="cardSub">Prometti solo ciò che puoi mantenere</div>
+          </div>
+        </div>
+
+        <div class="card-content" id="screenEnd" style="display:none">
+          <div class="card-top-label">Mazzo completato</div>
+          <div class="centered">
+            <div class="center-big">Fatto!</div>
+            <p class="center-sub">
+              Ora puoi visualizzare il risultato del Brand Deck 4D e analizzarlo con l’intelligenza artificiale.
+            </p>
+            <div class="final-score">
+              <span id="finalYes">0</span> tenute &nbsp;&nbsp;|&nbsp;&nbsp;
+              <span id="finalNo">0</span> scartate
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div class="card-actions-left">
+            <button class="btn btn-primary" id="btnYes">SÌ</button>
+            <button class="btn btn-secondary" id="btnNo">NO</button>
+          </div>
+          <div class="card-meta">
+            <button class="btn btn-ghost" id="btnUndo">UNDO</button>
+            <div class="mini-score">
+              <span id="miniYes">0</span>
+              <span>/</span>
+              <span id="miniNo">0</span>
+            </div>
+            <div id="cardCounter" class="muted">Carta 0 di 80</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANNELLO LATERALE -->
+      <aside class="side-panel">
+        <div class="side-box">
+          <div class="side-title">Come funziona</div>
+          <p class="side-desc">
+            Una carta alla volta. Tienila se ti sembra aderente al brand, altrimenti scartala. 
+            Alla fine otterrai un profilo sintetico basato su 4 dimensioni e 13 archetipi.
+          </p>
+          <div class="progress-line">
+            <span>Progresso</span>
+            <span id="progressLabel">0 / 80</span>
+          </div>
+          <div class="bar">
+            <span id="progressBar"></span>
+          </div>
+        </div>
+
+        <div class="side-box light">
+          <div class="side-title">Stato del mazzo</div>
+          <p class="side-desc light">
+            Puoi tornare indietro di una sola carta con <strong>UNDO</strong> se cambi idea.
+          </p>
+          <div class="progress-line">
+            <span>Carte viste</span>
+            <span id="seenLabel">0</span>
+          </div>
+          <div class="progress-line">
+            <span>Carte rimanenti</span>
+            <span id="remainLabel">80</span>
+          </div>
+        </div>
+
+        <div class="side-box light" id="aiPanel" style="display:none">
+          <div class="side-title">Analisi AI</div>
+          <p class="side-desc light">
+            I risultati vengono inviati all’Agente KAI per una lettura strategica del brand.
+          </p>
+          <button class="btn btn-primary" id="btnAnalyze" style="margin-top:10px; width:100%;">
+            Analizza con AI
+          </button>
+          <div class="ai-box" id="aiBox" style="display:none;">
+            <div>Output dell’Agente:</div>
+            <div class="ai-output" id="aiOutput">{ }</div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    // --- DATI DEL MAZZO (80 CARTE, COME NEL MANUALE) ---
+    const DECK = [
+      {"id":1,"text":"Autentico – Ciò che crei ti rappresenta.","dimension":"Essence","archetypes":["Innocente","Amico"]},
+      {"id":2,"text":"Visionario – Vedi strade dove altri vedono muri.","dimension":"Essence","archetypes":["Creatore","Mago"]},
+      {"id":3,"text":"Ironico – Usi il sorriso per dire cose serie.","dimension":"Essence","archetypes":["Buffone","Ribelle"]},
+      {"id":4,"text":"Libero – Nessuna idea vive in gabbia.","dimension":"Essence","archetypes":["Ribelle","Esploratore"]},
+      {"id":5,"text":"Elegante – Stile, mai ostentazione.","dimension":"Essence","archetypes":["Amante","Sovrano"]},
+      {"id":6,"text":"Coraggioso – Ti lanci anche quando non c’è rete.","dimension":"Essence","archetypes":["Eroe","Ribelle"]},
+      {"id":7,"text":"Empatico – Capisci prima di spiegare.","dimension":"Essence","archetypes":["Amico","Caregiver"]},
+      {"id":8,"text":"Creativo – L’originalità è il tuo respiro naturale.","dimension":"Essence","archetypes":["Creatore","Amante"]},
+      {"id":9,"text":"Sincero – Nessuna posa, solo sostanza.","dimension":"Essence","archetypes":["Innocente","Saggio"]},
+      {"id":10,"text":"Appassionato – Metti il cuore in ogni idea.","dimension":"Essence","archetypes":["Amante","Eroe"]},
+      {"id":11,"text":"Intuitivo – Le intuizioni arrivano prima dei dati.","dimension":"Essence","archetypes":["Mago","Saggio"]},
+      {"id":12,"text":"Onesto – Dici la verità, anche quando spiazza.","dimension":"Essence","archetypes":["Innocente","Caregiver"]},
+      {"id":13,"text":"Poetico – Trasformi la realtà in racconto.","dimension":"Essence","archetypes":["Creatore","Amante"]},
+      {"id":14,"text":"Umile – Nessun ego, solo risultati.","dimension":"Essence","archetypes":["Amico","Caregiver"]},
+      {"id":15,"text":"Lucido – Sai fermarti a guardare.","dimension":"Essence","archetypes":["Saggio","Creatore"]},
+      {"id":16,"text":"Aperto – Ogni punto di vista è un orizzonte.","dimension":"Essence","archetypes":["Esploratore","Amico"]},
+      {"id":17,"text":"Sostenibile – Pensi a lungo termine, non alla moda.","dimension":"Essence","archetypes":["Saggio","Innocente"]},
+      {"id":18,"text":"Iconico – Le tue idee restano impresse.","dimension":"Essence","archetypes":["Creatore","Sovrano"]},
+      {"id":19,"text":"Irrequieto – Ti muove la curiosità, non l’abitudine.","dimension":"Essence","archetypes":["Ribelle","Esploratore"]},
+      {"id":20,"text":"Autodidatta – Impari facendo, sempre.","dimension":"Essence","archetypes":["Eroe","Saggio"]},
+
+      {"id":21,"text":"Affidabile – Prometti solo ciò che puoi mantenere.","dimension":"Purpose","archetypes":["Sovrano","Caregiver"]},
+      {"id":22,"text":"Umano – La scienza parla attraverso le persone.","dimension":"Purpose","archetypes":["Caregiver","Amico"]},
+      {"id":23,"text":"Chiaro – Complesso non vuol dire incomprensibile.","dimension":"Purpose","archetypes":["Saggio","Innocente"]},
+      {"id":24,"text":"Rassicurante – Calmi le menti prima dei numeri.","dimension":"Purpose","archetypes":["Caregiver","Innocente"]},
+      {"id":25,"text":"Etico – Fai la cosa giusta, anche se non conviene.","dimension":"Purpose","archetypes":["Sovrano","Saggio"]},
+      {"id":26,"text":"Accogliente – Ogni messaggio è uno spazio sicuro.","dimension":"Purpose","archetypes":["Caregiver","Amico"]},
+      {"id":27,"text":"Educativo – Condividi conoscenza, non solo dati.","dimension":"Purpose","archetypes":["Saggio","Mago"]},
+      {"id":28,"text":"Empatico – Ascolti prima di parlare.","dimension":"Purpose","archetypes":["Caregiver","Amico"]},
+      {"id":29,"text":"Trasparente – Non nascondi dietro al linguaggio.","dimension":"Purpose","archetypes":["Innocente","Saggio"]},
+      {"id":30,"text":"Paziente – La fiducia cresce nel tempo.","dimension":"Purpose","archetypes":["Caregiver","Saggio"]},
+      {"id":31,"text":"Scientifico – Ogni parola pesa.","dimension":"Purpose","archetypes":["Saggio","Sovrano"]},
+      {"id":32,"text":"Leggero – La semplicità è la forma più alta di rispetto.","dimension":"Purpose","archetypes":["Innocente","Amico"]},
+      {"id":33,"text":"Delicato – La sensibilità è la tua forza.","dimension":"Purpose","archetypes":["Caregiver","Amante"]},
+      {"id":34,"text":"Inclusivo – Nessuno resta indietro.","dimension":"Purpose","archetypes":["Amico","Innocente"]},
+      {"id":35,"text":"Autorevole – Guida con competenza, non con toni alti.","dimension":"Purpose","archetypes":["Sovrano","Saggio"]},
+      {"id":36,"text":"Protettivo – Offri sicurezza, non controllo.","dimension":"Purpose","archetypes":["Caregiver","Sovrano"]},
+      {"id":37,"text":"Chiaro di intenti – Etica e chiarezza camminano insieme.","dimension":"Purpose","archetypes":["Saggio","Caregiver"]},
+      {"id":38,"text":"Discreto – Il rispetto si misura nel silenzio.","dimension":"Purpose","archetypes":["Caregiver","Saggio"]},
+      {"id":39,"text":"Lucido – La mente al servizio della cura.","dimension":"Purpose","archetypes":["Saggio","Caregiver"]},
+      {"id":40,"text":"Empowerment – Aiuti le persone a sentirsi capaci.","dimension":"Purpose","archetypes":["Eroe","Caregiver"]},
+
+      {"id":41,"text":"Innovativo – Reinventi ogni giorno il modo di comunicare.","dimension":"Expression","archetypes":["Mago","Creatore"]},
+      {"id":42,"text":"Analitico – L’intuizione va misurata.","dimension":"Expression","archetypes":["Saggio","Mago"]},
+      {"id":43,"text":"Sperimentale – Testi, sbagli, migliori.","dimension":"Expression","archetypes":["Ribelle","Creatore"]},
+      {"id":44,"text":"Strategico – Ogni insight diventa direzione.","dimension":"Expression","archetypes":["Eroe","Sovrano"]},
+      {"id":45,"text":"Visionario – La tecnologia è la tua tela.","dimension":"Expression","archetypes":["Mago","Creatore"]},
+      {"id":46,"text":"Accessibile – L’innovazione deve includere, non escludere.","dimension":"Expression","archetypes":["Amico","Innocente"]},
+      {"id":47,"text":"Rapido – Il timing è parte del talento.","dimension":"Expression","archetypes":["Eroe","Mago"]},
+      {"id":48,"text":"Essenziale – La chiarezza è la nuova UX.","dimension":"Expression","archetypes":["Saggio","Creatore"]},
+      {"id":49,"text":"Preciso – La qualità è una questione di pixel.","dimension":"Expression","archetypes":["Sovrano","Saggio"]},
+      {"id":50,"text":"Disruptive – Cambi le regole, ma con metodo.","dimension":"Expression","archetypes":["Ribelle","Eroe"]},
+      {"id":51,"text":"Intelligente – Usi la logica per liberare la creatività.","dimension":"Expression","archetypes":["Mago","Saggio"]},
+      {"id":52,"text":"Digitale – Parli il linguaggio dei bit, pensi come un umano.","dimension":"Expression","archetypes":["Mago","Amico"]},
+      {"id":53,"text":"Connesso – Tutto comunica, se sai ascoltare.","dimension":"Expression","archetypes":["Mago","Amico"]},
+      {"id":54,"text":"Metodico – L’innovazione nasce dal processo.","dimension":"Expression","archetypes":["Saggio","Creatore"]},
+      {"id":55,"text":"Evolutivo – Resti in movimento.","dimension":"Expression","archetypes":["Esploratore","Eroe"]},
+      {"id":56,"text":"Proattivo – Ti muovi prima che serva.","dimension":"Expression","archetypes":["Eroe","Mago"]},
+      {"id":57,"text":"Dinamico – Ti adatti senza perdere forma.","dimension":"Expression","archetypes":["Eroe","Creatore"]},
+      {"id":58,"text":"Tecnologico – Ogni innovazione parte da un’intenzione.","dimension":"Expression","archetypes":["Mago","Sovrano"]},
+      {"id":59,"text":"Empirico – Provi, osservi, correggi.","dimension":"Expression","archetypes":["Saggio","Esploratore"]},
+      {"id":60,"text":"Curioso – La scoperta è il tuo motore.","dimension":"Expression","archetypes":["Esploratore","Amico"]},
+
+      {"id":61,"text":"Strategico – Vedi il quadro completo.","dimension":"Impact","archetypes":["Sovrano","Saggio"]},
+      {"id":62,"text":"Collaborativo – Il successo è una costruzione collettiva.","dimension":"Impact","archetypes":["Amico","Caregiver"]},
+      {"id":63,"text":"Affidabile – Mantieni promesse, costruisci fiducia.","dimension":"Impact","archetypes":["Sovrano","Caregiver"]},
+      {"id":64,"text":"Pratico – Idee che funzionano davvero.","dimension":"Impact","archetypes":["Eroe","Saggio"]},
+      {"id":65,"text":"Energico – Coinvolgi con entusiasmo.","dimension":"Impact","archetypes":["Eroe","Amante"]},
+      {"id":66,"text":"Tenace – La costanza è la tua forza.","dimension":"Impact","archetypes":["Eroe","Sovrano"]},
+      {"id":67,"text":"Istituzionale – Ogni contesto ha il suo codice.","dimension":"Impact","archetypes":["Sovrano","Saggio"]},
+      {"id":68,"text":"Empatico – Sai leggere le persone oltre i brief.","dimension":"Impact","archetypes":["Amico","Caregiver"]},
+      {"id":69,"text":"Coerente – Tutto racconta la stessa storia.","dimension":"Impact","archetypes":["Sovrano","Saggio"]},
+      {"id":70,"text":"Motivante – Fai emergere il meglio dagli altri.","dimension":"Impact","archetypes":["Eroe","Amico"]},
+      {"id":71,"text":"Efficiente – L’organizzazione è creatività applicata.","dimension":"Impact","archetypes":["Sovrano","Eroe"]},
+      {"id":72,"text":"Attento – Noti i dettagli che contano.","dimension":"Impact","archetypes":["Caregiver","Saggio"]},
+      {"id":73,"text":"Risolutivo – Ogni problema è un invito all’azione.","dimension":"Impact","archetypes":["Eroe","Mago"]},
+      {"id":74,"text":"Solido – Sei la base su cui costruire.","dimension":"Impact","archetypes":["Sovrano","Caregiver"]},
+      {"id":75,"text":"Positivo – L’ottimismo è una strategia.","dimension":"Impact","archetypes":["Innocente","Amico"]},
+      {"id":76,"text":"Ordinato – La chiarezza genera fiducia.","dimension":"Impact","archetypes":["Sovrano","Saggio"]},
+      {"id":77,"text":"Generoso – Condividi esperienza, non solo risultati.","dimension":"Impact","archetypes":["Caregiver","Amico"]},
+      {"id":78,"text":"Affabile – Le relazioni prima dei ruoli.","dimension":"Impact","archetypes":["Amico","Innocente"]},
+      {"id":79,"text":"Credibile – Ogni azione parla più delle parole.","dimension":"Impact","archetypes":["Eroe","Sovrano"]},
+      {"id":80,"text":"Connesso – Trasformi i progetti in legami.","dimension":"Impact","archetypes":["Caregiver","Amico"]}
+    ];
+
+    const state = {
+      order: [],
+      idx: -1, // -1 = ancora su intro
+      decisions: new Map(), // id -> true (SÌ) | false (NO)
+      undoStack: [],
+      results: null
+    };
+
+    // shortcut DOM
+    const $ = (sel) => document.querySelector(sel);
+
+    const screenIntro = $("#screenIntro");
+    const screenGame = $("#screenGame");
+    const screenEnd = $("#screenEnd");
+
+    const cardWord = $("#cardWord");
+    const cardSub = $("#cardSub");
+    const cardCounter = $("#cardCounter");
+    const miniYes = $("#miniYes");
+    const miniNo = $("#miniNo");
+    const finalYes = $("#finalYes");
+    const finalNo = $("#finalNo");
+    const progressLabel = $("#progressLabel");
+    const progressBar = $("#progressBar");
+    const seenLabel = $("#seenLabel");
+    const remainLabel = $("#remainLabel");
+
+    const btnYes = $("#btnYes");
+    const btnNo = $("#btnNo");
+    const btnUndo = $("#btnUndo");
+    const btnAnalyze = $("#btnAnalyze");
+    const aiPanel = $("#aiPanel");
+    const aiBox = $("#aiBox");
+    const aiOutput = $("#aiOutput");
+
+    function shuffle(arr){
+      const a = [...arr];
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function startDeck(){
+      state.order = shuffle([...DECK.keys()]);
+      state.idx = 0;
+      state.decisions.clear();
+      state.undoStack = [];
+      state.results = null;
+      screenIntro.style.display = "none";
+      screenGame.style.display = "";
+      screenEnd.style.display = "none";
+      aiPanel.style.display = "none";
+      aiBox.style.display = "none";
+      updateUI();
+    }
+
+    function currentCard(){
+      if(state.idx < 0 || state.idx >= state.order.length) return null;
+      const index = state.order[state.idx];
+      return DECK[index];
+    }
+
+    function renderCard(){
+      const c = currentCard();
+      if(!c) return;
+      const [rawWord, rawSub] = c.text.split("–");
+      cardWord.textContent = (rawWord || "").trim().toUpperCase();
+      cardSub.textContent = (rawSub || c.text).trim();
+      cardCounter.textContent = `Carta ${state.idx+1} di ${DECK.length}`;
+    }
+
+    function updateCounters(){
+      const total = DECK.length;
+      const seen = Math.max(0, state.idx);
+      const yes = [...state.decisions.values()].filter(v => v === true).length;
+      const no = [...state.decisions.values()].filter(v => v === false).length;
+      const remain = total - seen;
+
+      miniYes.textContent = yes;
+      miniNo.textContent = no;
+      finalYes.textContent = yes;
+      finalNo.textContent = no;
+      progressLabel.textContent = `${seen} / ${total}`;
+      progressBar.style.width = `${(seen/total)*100}%`;
+      seenLabel.textContent = seen;
+      remainLabel.textContent = remain;
+    }
+
+    function updateUI(){
+      const total = DECK.length;
+      if(state.idx >= total){
+        // fine mazzo
+        screenIntro.style.display = "none";
+        screenGame.style.display = "none";
+        screenEnd.style.display = "";
+        aiPanel.style.display = "";
+        buildResults();
+      } else if(state.idx < 0){
+        // intro
+        screenIntro.style.display = "";
+        screenGame.style.display = "none";
+        screenEnd.style.display = "none";
+      } else {
+        // in gioco
+        screenIntro.style.display = "none";
+        screenGame.style.display = "";
+        screenEnd.style.display = "none";
+        renderCard();
+      }
+      updateCounters();
+      btnUndo.disabled = state.undoStack.length === 0 || state.idx < 0 || state.idx > total;
+    }
+
+    function decide(yes){
+      if(state.idx < 0) {
+        // dalla intro, il primo click su sì/no fa partire
+        startDeck();
+        return;
+      }
+      const c = currentCard();
+      if(!c) return;
+      state.decisions.set(c.id, yes);
+      state.undoStack.push({ id: c.id, decision: yes, idx: state.idx });
+      state.idx++;
+      updateUI();
+    }
+
+    function undo(){
+      const last = state.undoStack.pop();
+      if(!last) return;
+      state.decisions.delete(last.id);
+      state.idx = last.idx;
+      updateUI();
+    }
+
+    function buildResults(){
+      const total = DECK.length;
+      const selectedIds = [...state.decisions.entries()]
+        .filter(([_,v]) => v === true)
+        .map(([id,_]) => id);
+      const selectedCards = DECK.filter(c => selectedIds.includes(c.id));
+
+      const dims = { Essence:0, Purpose:0, Expression:0, Impact:0 };
+      const archetypeKeys = ["Amante","Amico","Buffone","Caregiver","Creatore","Eroe","Esploratore","Innocente","Mago","Non Evoluto","Ribelle","Saggio","Sovrano"];
+      const arch = Object.fromEntries(archetypeKeys.map(k => [k,0]));
+
+      for(const c of selectedCards){
+        if(dims[c.dimension] != null) dims[c.dimension]++;
+        for(const a of c.archetypes){
+          if(arch[a] != null) arch[a]++;
+        }
+      }
+
+      state.results = {
+        total,
+        selected: selectedCards.length,
+        byDimension: dims,
+        byArchetype: arch,
+        decisions: [...state.decisions.entries()].map(([id,accepted]) => {
+          const c = DECK.find(x => x.id === id);
+          return {
+            id,
+            accepted,
+            text: c?.text,
+            dimension: c?.dimension,
+            archetypes: c?.archetypes
+          };
+        })
+      };
+    }
+
+    async function analyzeWithAI(){
+      if(!state.results){
+        alert("Completa prima il mazzo.");
+        return;
+      }
+      aiBox.style.display = "";
+      aiOutput.textContent = "Analisi in corso...";
+
+      try {
+        const res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(state.results)
+        });
+        const data = await res.json();
+        if(!data.ok){
+          aiOutput.textContent = "Errore nell'analisi AI: " + (data.error || "sconosciuto");
+          return;
+        }
+        aiOutput.textContent = JSON.stringify(data.analysis, null, 2);
+      } catch (err) {
+        aiOutput.textContent = "Errore di rete o server: " + String(err);
+      }
+    }
+
+    // Eventi
+    btnYes.addEventListener("click", () => decide(true));
+    btnNo.addEventListener("click", () => decide(false));
+    btnUndo.addEventListener("click", undo);
+    btnAnalyze.addEventListener("click", analyzeWithAI);
+
+    // dalla intro: primo click su SÌ/NO fa partire il mazzo
+    screenIntro.addEventListener("click", startDeck);
+
+    // scorciatoie tastiera
+    window.addEventListener("keydown", (e) => {
+      const key = e.key.toLowerCase();
+      if(key === "y" || key === "s") decide(true); // sì
+      else if(key === "n") decide(false); // no
+      else if(key === "u") undo();
+    });
+
+    // stato iniziale
+    updateUI();
+  </script>
+</body>
+</html>
