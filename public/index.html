@@ -404,6 +404,31 @@
       letter-spacing: 0.14em;
     }
 
+    }
+
+    .card-main::before {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border-radius: 30px;
+      border: 1px solid rgba(16, 34, 58, 0.06);
+      pointer-events: none;
+    }
+
+    .card-badge {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(16, 34, 58, 0.6);
+      font-weight: 600;
+    }
+
+    .card-word {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+    }
+
     .card-sub {
       font-size: 16px;
       line-height: 1.5;
@@ -600,6 +625,7 @@
   </style>
 </head>
 <body data-phase="cover">
+<body>
   <div class="app">
     <div class="top-bar">
       <div class="brand-mark">
@@ -644,6 +670,52 @@
     </section>
 
     <section class="screen screen-start" id="screenStart">
+      <button class="cta" id="btnStart">Inizia</button>
+    </section>
+
+    <section class="screen screen-intro active" id="screenIntro">
+      <div class="deck-showcase">
+        <div class="deck-card">
+          <div class="doodles">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="title">Il tuo mazzo</div>
+          <div class="logo-word">
+            <span>brand deck 4D</span>
+            Kaffeina
+          </div>
+        </div>
+        <div>
+          <div class="preview-copy">Fronte carte, 1 per tipo</div>
+          <div class="card-preview-grid">
+            <div class="preview-card yellow">
+              <div class="label">Autentico</div>
+              <div class="word">AUTENTICO</div>
+              <div class="desc">Ciò che crei ti rappresenta.</div>
+            </div>
+            <div class="preview-card teal">
+              <div class="label">Affidabile</div>
+              <div class="word">AFFIDABILE</div>
+              <div class="desc">Prometti solo ciò che puoi mantenere.</div>
+            </div>
+            <div class="preview-card cyan">
+              <div class="label">Innovativo</div>
+              <div class="word">INNOVATIVO</div>
+              <div class="desc">Reinventi ogni giorno il modo di comunicare.</div>
+            </div>
+            <div class="preview-card green">
+              <div class="label">Strategico</div>
+              <div class="word">STRATEGICO</div>
+              <div class="desc">Vedi il quadro completo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <button class="cta" id="btnStart">Inizia</button>
     </section>
 
@@ -808,6 +880,7 @@
       undoStack: [],
       results: null,
       phase: "cover"
+      phase: "onboarding"
     };
 
     const $ = (sel) => document.querySelector(sel);
@@ -975,6 +1048,7 @@
       screenCover?.classList.toggle("active", state.phase === "cover");
       screenCategories?.classList.toggle("active", state.phase === "categories");
       screenStart?.classList.toggle("active", state.phase === "prestart");
+      screenIntro?.classList.toggle("active", state.phase === "onboarding");
       screenGame?.classList.toggle("active", state.phase === "guide" || state.phase === "playing");
       screenEnd?.classList.toggle("active", state.phase === "complete");
 
@@ -1019,6 +1093,27 @@
       if (!dragState.active && state.phase !== "playing") {
         resetDragStyles();
       }
+    }
+
+      }
+
+      const progressText = (() => {
+        if (state.phase === "complete") return `Completato ${TOTAL_CARDS} / ${TOTAL_CARDS}`;
+        if (state.phase === "playing") return `Carta ${Math.min(state.idx + 1, TOTAL_CARDS)} di ${TOTAL_CARDS}`;
+        return `Carta 1 di ${TOTAL_CARDS}`;
+      })();
+      if (cardCounter) cardCounter.textContent = progressText;
+
+      if (btnYes) btnYes.disabled = state.phase !== "playing";
+      if (btnNo) btnNo.disabled = state.phase !== "playing";
+      if (btnUndo) btnUndo.disabled = state.phase !== "playing" || state.undoStack.length === 0;
+      if (btnAnalyze) btnAnalyze.disabled = state.phase !== "complete";
+
+      if (state.phase !== "complete" && aiBox) {
+        aiBox.style.display = "none";
+      }
+
+      updateCounters();
     }
 
     function decide(yes) {
@@ -1140,6 +1235,7 @@
       state.undoStack = [];
       state.results = null;
       state.phase = "cover";
+      state.phase = "onboarding";
       if (aiBox) aiBox.style.display = "none";
       if (aiOutput) aiOutput.textContent = "{ }";
       updateUI();
@@ -1169,6 +1265,9 @@
         startDeck();
         return;
       }
+
+    window.addEventListener("keydown", (e) => {
+      const key = e.key.toLowerCase();
       if (state.phase === "guide" && (key === "enter" || key === " ")) {
         revealFirstCard();
         return;

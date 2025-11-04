@@ -122,6 +122,7 @@ Obiettivo finale: restituire una mappa sintetica della personalità di marca e d
         format: {
           type: "json_object"
         }
+        format: "json_object"
       }
     });
 
