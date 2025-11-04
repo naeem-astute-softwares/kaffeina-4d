@@ -48,6 +48,14 @@
       gap: 32px;
     }
 
+    body[data-phase="cover"] .app {
+      gap: 0;
+    }
+
+    body[data-phase="cover"] .top-bar {
+      display: none;
+    }
+
     .top-bar {
       display: flex;
       flex-direction: column;
@@ -118,78 +126,38 @@
     }
 
     .screen-cover {
-      gap: 40px;
+      justify-content: center;
+      min-height: clamp(420px, 70vh, 780px);
+      cursor: pointer;
+      outline: none;
     }
 
-    .cover-card {
-      width: clamp(260px, 45vw, 360px);
-      aspect-ratio: 2.5 / 4;
-      border-radius: 38px;
-      box-shadow: var(--card-shadow);
-      background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.08), transparent 60%),
-        radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.12), transparent 70%),
-        #1f3358;
-      position: relative;
+    .screen-start {
+      justify-content: center;
+      min-height: clamp(260px, 50vh, 420px);
+    }
+
+    .screen-cover:focus-visible {
+      outline: 2px solid var(--yellow);
+      outline-offset: 18px;
+    }
+
+    .cover-figure {
+      width: clamp(260px, 55vw, 420px);
+      aspect-ratio: 3 / 4;
+      border-radius: 40px;
       overflow: hidden;
-      padding: 36px 32px;
+      box-shadow: var(--card-shadow);
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      color: #fef9e8;
-    }
-
-    .cover-card::after {
-      content: "";
-      position: absolute;
-      inset: 28px;
-      border-radius: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      pointer-events: none;
-    }
-
-    .cover-card .doodles span {
-      position: absolute;
-      display: block;
-      width: 56px;
-      height: 56px;
-      border: 2px solid rgba(255, 255, 255, 0.22);
-      border-radius: 20px;
-      opacity: 0.6;
-    }
-
-    .cover-card .doodles span:nth-child(1) { top: 40px; left: 32px; }
-    .cover-card .doodles span:nth-child(2) { top: 40px; right: 34px; border-radius: 999px; }
-    .cover-card .doodles span:nth-child(3) { bottom: 120px; left: 46px; border-radius: 50%; }
-    .cover-card .doodles span:nth-child(4) { bottom: 56px; right: 48px; border-style: dashed; }
-    .cover-card .doodles span:nth-child(5) { top: 160px; left: 50%; transform: translateX(-50%); border-radius: 999px 42px 999px 42px; }
-    .cover-card .doodles span:nth-child(6) { top: 126px; right: 122px; border-radius: 16px; }
-
-    .cover-logo {
-      position: relative;
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 12px;
-      font-size: clamp(20px, 4vw, 34px);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 600;
-      z-index: 1;
+      justify-content: center;
+      background: rgba(12, 22, 44, 0.72);
     }
 
-    .cover-logo img {
-      width: clamp(72px, 12vw, 96px);
-      height: auto;
-    }
-
-    .cover-logo span {
-      font-size: clamp(16px, 3vw, 22px);
-      letter-spacing: 0.18em;
-    }
-
-    .cover-logo strong {
-      font-size: clamp(28px, 5vw, 40px);
-      letter-spacing: 0.28em;
+    .cover-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .screen-categories h2 {
@@ -396,6 +364,8 @@
       align-items: center;
       text-align: center;
       overflow: hidden;
+      transition: transform 180ms ease, box-shadow 220ms ease, opacity 180ms ease;
+      touch-action: pan-y;
     }
 
     .card-main::before {
@@ -405,6 +375,19 @@
       border-radius: 30px;
       border: 1px solid rgba(16, 34, 58, 0.06);
       pointer-events: none;
+    }
+
+    .card-main.dragging {
+      transition: none;
+      cursor: grabbing;
+    }
+
+    .card-main.swipe-positive {
+      box-shadow: 0 28px 60px rgba(50, 210, 120, 0.35);
+    }
+
+    .card-main.swipe-negative {
+      box-shadow: 0 28px 60px rgba(255, 89, 94, 0.35);
     }
 
     .card-badge {
@@ -616,7 +599,7 @@
     }
   </style>
 </head>
-<body>
+<body data-phase="cover">
   <div class="app">
     <div class="top-bar">
       <div class="brand-mark">
@@ -627,23 +610,10 @@
       <p class="lead">Where Ideas Come to Life. Anche nella strategia dei brand.</p>
     </div>
 
-    <section class="screen screen-cover active" id="screenCover">
-      <div class="cover-card">
-        <div class="doodles">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <div class="cover-logo">
-          <img src="./assets/logo.png" alt="Brand Deck 4D" />
-          <span>brand deck</span>
-          <strong>4D</strong>
-        </div>
+    <section class="screen screen-cover active" id="screenCover" tabindex="0" aria-label="Apri il Brand Deck 4D">
+      <div class="cover-figure">
+        <img src="./assets/cover-placeholder.svg" alt="Placeholder Brand Deck 4D" />
       </div>
-      <button class="cta" id="btnToCategories">Continua</button>
     </section>
 
     <section class="screen screen-categories" id="screenCategories">
@@ -674,7 +644,6 @@
     </section>
 
     <section class="screen screen-start" id="screenStart">
-      <p class="lead">Quando sei pronto, avvia il Brand Deck 4D e inizia a selezionare le carte che rappresentano il tuo brand.</p>
       <button class="cta" id="btnStart">Inizia</button>
     </section>
 
@@ -853,7 +822,6 @@
     const cardWord = $("#cardWord");
     const cardSub = $("#cardSub");
     const guideNote = $("#guideNote");
-    const btnToCategories = $("#btnToCategories");
     const btnToStartScreen = $("#btnToStartScreen");
     const btnStart = $("#btnStart");
     const btnReveal = $("#btnReveal");
@@ -862,6 +830,7 @@
     const btnUndo = $("#btnUndo");
     const btnAnalyze = $("#btnAnalyze");
     const btnRestart = $("#btnRestart");
+    const activeCard = $("#activeCard");
     const cardCounter = $("#gameProgress");
     const countYes = $("#countYes");
     const countNo = $("#countNo");
@@ -871,6 +840,8 @@
     const aiOutput = $("#aiOutput");
 
     const TOTAL_CARDS = DECK.length;
+    const DRAG_THRESHOLD = 140;
+    const dragState = { active: false, startX: 0, pointerId: null, lastX: 0 };
 
     function shuffle(arr) {
       const a = [...arr];
@@ -905,6 +876,78 @@
       return DECK[index];
     }
 
+    function resetDragStyles() {
+      if (!activeCard) return;
+      activeCard.style.transition = "";
+      activeCard.style.transform = "";
+      activeCard.style.opacity = "";
+      activeCard.classList.remove("dragging", "swipe-positive", "swipe-negative");
+      if (!dragState.active) {
+        dragState.startX = 0;
+        dragState.lastX = 0;
+        dragState.pointerId = null;
+      }
+    }
+
+    function handlePointerDown(e) {
+      if (state.phase !== "playing" || !activeCard) return;
+      dragState.active = true;
+      dragState.startX = e.clientX;
+      dragState.lastX = e.clientX;
+      dragState.pointerId = typeof e.pointerId === "number" ? e.pointerId : null;
+      activeCard.classList.remove("swipe-positive", "swipe-negative");
+      activeCard.classList.add("dragging");
+      activeCard.style.transition = "none";
+      if (dragState.pointerId != null && typeof activeCard.setPointerCapture === "function") {
+        try {
+          activeCard.setPointerCapture(dragState.pointerId);
+        } catch (err) {}
+      }
+      e.preventDefault();
+    }
+
+    function handlePointerMove(e) {
+      if (!dragState.active || !activeCard) return;
+      const deltaX = e.clientX - dragState.startX;
+      const rotation = Math.max(-20, Math.min(20, deltaX / 12));
+      dragState.lastX = e.clientX;
+      activeCard.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+      activeCard.classList.toggle("swipe-positive", deltaX > DRAG_THRESHOLD);
+      activeCard.classList.toggle("swipe-negative", deltaX < -DRAG_THRESHOLD);
+    }
+
+    function handlePointerEnd(e) {
+      if (!activeCard || !dragState.active) return;
+      if (typeof e.clientX === "number") {
+        dragState.lastX = e.clientX;
+      }
+      const deltaX = dragState.lastX - dragState.startX;
+      dragState.active = false;
+      if (dragState.pointerId != null && typeof activeCard.releasePointerCapture === "function") {
+        try {
+          activeCard.releasePointerCapture(dragState.pointerId);
+        } catch (err) {}
+      }
+      dragState.pointerId = null;
+
+      if (Math.abs(deltaX) >= DRAG_THRESHOLD) {
+        const accept = deltaX > 0;
+        activeCard.style.transition = "transform 220ms ease, opacity 220ms ease";
+        activeCard.style.transform = `translateX(${accept ? 600 : -600}px) rotate(${accept ? 24 : -24}deg)`;
+        activeCard.style.opacity = "0";
+        setTimeout(() => {
+          decide(accept);
+          resetDragStyles();
+        }, 220);
+      } else {
+        activeCard.style.transition = "transform 200ms ease, box-shadow 220ms ease";
+        activeCard.style.transform = "";
+        setTimeout(() => {
+          resetDragStyles();
+        }, 200);
+      }
+    }
+
     function renderCard() {
       const c = currentCard();
       if (!c) return;
@@ -912,6 +955,7 @@
       cardDimension.textContent = c.dimension || "";
       cardWord.textContent = (rawWord || c.text || "").trim().toUpperCase();
       cardSub.textContent = (rawSub || c.text || "").trim();
+      resetDragStyles();
     }
 
     function updateCounters() {
@@ -925,6 +969,9 @@
     }
 
     function updateUI() {
+      if (document.body) {
+        document.body.dataset.phase = state.phase;
+      }
       screenCover?.classList.toggle("active", state.phase === "cover");
       screenCategories?.classList.toggle("active", state.phase === "categories");
       screenStart?.classList.toggle("active", state.phase === "prestart");
@@ -934,6 +981,7 @@
       if (cardStage) cardStage.classList.toggle("is-guide", state.phase === "guide");
 
       if (state.phase === "guide") {
+        resetDragStyles();
         cardDimension.textContent = "brand deck 4d";
         cardWord.textContent = "INIZIA!";
         cardSub.textContent = "Guarda la carta e scegli se tenerla o buttarla.";
@@ -955,7 +1003,6 @@
       })();
       if (cardCounter) cardCounter.textContent = progressText;
 
-      if (btnToCategories) btnToCategories.disabled = state.phase !== "cover";
       if (btnToStartScreen) btnToStartScreen.disabled = state.phase !== "categories";
       if (btnStart) btnStart.disabled = state.phase !== "prestart";
       if (btnYes) btnYes.disabled = state.phase !== "playing";
@@ -968,6 +1015,10 @@
       }
 
       updateCounters();
+
+      if (!dragState.active && state.phase !== "playing") {
+        resetDragStyles();
+      }
     }
 
     function decide(yes) {
@@ -1056,9 +1107,19 @@
       }
     }
 
-    btnToCategories?.addEventListener("click", () => {
+    screenCover?.addEventListener("click", () => {
+      if (state.phase !== "cover") return;
       state.phase = "categories";
       updateUI();
+    });
+
+    screenCover?.addEventListener("keydown", (e) => {
+      if (state.phase !== "cover") return;
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        state.phase = "categories";
+        updateUI();
+      }
     });
 
     btnToStartScreen?.addEventListener("click", () => {
@@ -1082,6 +1143,14 @@
       if (aiBox) aiBox.style.display = "none";
       if (aiOutput) aiOutput.textContent = "{ }";
       updateUI();
+    });
+
+    activeCard?.addEventListener("pointerdown", handlePointerDown);
+    activeCard?.addEventListener("pointermove", handlePointerMove);
+    activeCard?.addEventListener("pointerup", handlePointerEnd);
+    activeCard?.addEventListener("pointercancel", handlePointerEnd);
+    activeCard?.addEventListener("pointerleave", (e) => {
+      if (dragState.active) handlePointerEnd(e);
     });
 
     window.addEventListener("keydown", (e) => {

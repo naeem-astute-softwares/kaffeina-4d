@@ -1,0 +1,22 @@
+<svg width="720" height="1024" viewBox="0 0 720 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="720" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2f4370" />
+      <stop offset="50%" stop-color="#1f2f55" />
+      <stop offset="100%" stop-color="#121f3b" />
+    </linearGradient>
+    <linearGradient id="glow" x1="120" y1="120" x2="600" y2="880" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#64d3ff" stop-opacity="0.32" />
+      <stop offset="100%" stop-color="#64d3ff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect x="24" y="24" width="672" height="976" rx="72" fill="url(#grad)" />
+  <rect x="64" y="72" width="592" height="880" rx="52" fill="#1a2b4c" opacity="0.6" />
+  <rect x="64" y="72" width="592" height="880" rx="52" fill="url(#glow)" />
+  <circle cx="200" cy="220" r="48" stroke="#8fd8ff" stroke-width="6" stroke-linecap="round" stroke-dasharray="16 24" opacity="0.45" />
+  <rect x="448" y="224" width="120" height="120" rx="28" stroke="#ffe29a" stroke-width="6" stroke-linecap="round" stroke-dasharray="20 26" opacity="0.4" />
+  <circle cx="360" cy="520" r="168" stroke="#ffffff" stroke-width="4" stroke-opacity="0.08" />
+  <circle cx="360" cy="520" r="112" stroke="#ffffff" stroke-width="4" stroke-opacity="0.08" />
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="'Poppins', 'Segoe UI', sans-serif" font-size="56" letter-spacing="0.4em" fill="#f0f4ff" opacity="0.6">KAFFEINA</text>
+  <text x="50%" y="50%" dy="68" dominant-baseline="middle" text-anchor="middle" font-family="'Poppins', 'Segoe UI', sans-serif" font-size="32" letter-spacing="0.8em" fill="#f7d447" opacity="0.75">4D</text>
+</svg>
