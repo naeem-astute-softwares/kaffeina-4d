@@ -48,6 +48,14 @@
       gap: 32px;
     }
 
+    body[data-phase="cover"] .app {
+      gap: 0;
+    }
+
+    body[data-phase="cover"] .top-bar {
+      display: none;
+    }
+
     .top-bar {
       display: flex;
       flex-direction: column;
@@ -107,82 +115,56 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .screen-intro {
+    .screen-cover,
+    .screen-categories,
+    .screen-start {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 32px;
+      text-align: center;
     }
 
-    .deck-showcase {
-      display: flex;
+    .screen-cover {
       justify-content: center;
-      align-items: center;
-      gap: 48px;
-      flex-wrap: wrap;
+      min-height: clamp(420px, 70vh, 780px);
+      cursor: pointer;
+      outline: none;
     }
 
-    .deck-card {
-      width: clamp(240px, 40vw, 340px);
-      aspect-ratio: 2.5 / 4;
-      background: #1f3358;
-      border-radius: 38px;
-      box-shadow: var(--card-shadow);
-      padding: 28px;
-      position: relative;
+    .screen-start {
+      justify-content: center;
+      min-height: clamp(260px, 50vh, 420px);
+    }
+
+    .screen-cover:focus-visible {
+      outline: 2px solid var(--yellow);
+      outline-offset: 18px;
+    }
+
+    .cover-figure {
+      width: clamp(260px, 55vw, 420px);
+      aspect-ratio: 3 / 4;
+      border-radius: 40px;
       overflow: hidden;
+      box-shadow: var(--card-shadow);
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      color: #fef9e8;
+      align-items: center;
+      justify-content: center;
+      background: rgba(12, 22, 44, 0.72);
     }
 
-    .deck-card .title {
-      font-size: clamp(18px, 3vw, 24px);
+    .cover-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .screen-categories h2 {
+      font-size: 15px;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-weight: 600;
-    }
-
-    .deck-card .logo-word {
-      margin-top: auto;
-      font-size: clamp(22px, 4vw, 32px);
-      font-weight: 600;
-      line-height: 1.3;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .deck-card .logo-word span {
-      font-size: clamp(16px, 3vw, 20px);
-      letter-spacing: 0.1em;
-    }
-
-    .deck-card .doodles span {
-      position: absolute;
-      display: block;
-      width: 48px;
-      height: 48px;
-      border: 2px solid rgba(255, 255, 255, 0.24);
-      border-radius: 18px;
-      opacity: 0.65;
-    }
-
-    .deck-card .doodles span:nth-child(1) { top: 38px; left: 30px; }
-    .deck-card .doodles span:nth-child(2) { top: 38px; right: 28px; border-radius: 999px; }
-    .deck-card .doodles span:nth-child(3) { bottom: 120px; left: 40px; border-radius: 50%; }
-    .deck-card .doodles span:nth-child(4) { bottom: 48px; right: 36px; border-style: dashed; }
-    .deck-card .doodles span:nth-child(5) { top: 160px; left: 50%; transform: translateX(-50%); border-radius: 999px 40px 999px 40px; }
-    .deck-card .doodles span:nth-child(6) { top: 120px; right: 110px; border-radius: 12px; }
-
-    .deck-card::after {
-      content: "";
-      position: absolute;
-      inset: 24px;
-      border-radius: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      pointer-events: none;
+      color: var(--muted);
     }
 
     .preview-copy {
@@ -197,6 +179,15 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 18px;
+    }
+
+    .screen-categories .card-preview-grid {
+      width: min(720px, 100%);
+      margin: 0 auto;
+    }
+
+    .screen-start .lead {
+      max-width: 520px;
     }
 
     .preview-card {
@@ -373,6 +364,46 @@
       align-items: center;
       text-align: center;
       overflow: hidden;
+      transition: transform 180ms ease, box-shadow 220ms ease, opacity 180ms ease;
+      touch-action: pan-y;
+    }
+
+    .card-main::before {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border-radius: 30px;
+      border: 1px solid rgba(16, 34, 58, 0.06);
+      pointer-events: none;
+    }
+
+    .card-main.dragging {
+      transition: none;
+      cursor: grabbing;
+    }
+
+    .card-main.swipe-positive {
+      box-shadow: 0 28px 60px rgba(50, 210, 120, 0.35);
+    }
+
+    .card-main.swipe-negative {
+      box-shadow: 0 28px 60px rgba(255, 89, 94, 0.35);
+    }
+
+    .card-badge {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(16, 34, 58, 0.6);
+      font-weight: 600;
+    }
+
+    .card-word {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+    }
+
     }
 
     .card-main::before {
@@ -593,6 +624,7 @@
     }
   </style>
 </head>
+<body data-phase="cover">
 <body>
   <div class="app">
     <div class="top-bar">
@@ -603,6 +635,43 @@
       <h1>Mazzo di carte</h1>
       <p class="lead">Where Ideas Come to Life. Anche nella strategia dei brand.</p>
     </div>
+
+    <section class="screen screen-cover active" id="screenCover" tabindex="0" aria-label="Apri il Brand Deck 4D">
+      <div class="cover-figure">
+        <img src="./assets/cover-placeholder.svg" alt="Placeholder Brand Deck 4D" />
+      </div>
+    </section>
+
+    <section class="screen screen-categories" id="screenCategories">
+      <h2>Fronte carte, 1 per tipo</h2>
+      <div class="card-preview-grid">
+        <div class="preview-card yellow">
+          <div class="label">Autentico</div>
+          <div class="word">AUTENTICO</div>
+          <div class="desc">Ciò che crei ti rappresenta.</div>
+        </div>
+        <div class="preview-card teal">
+          <div class="label">Affidabile</div>
+          <div class="word">AFFIDABILE</div>
+          <div class="desc">Prometti solo ciò che puoi mantenere.</div>
+        </div>
+        <div class="preview-card cyan">
+          <div class="label">Innovativo</div>
+          <div class="word">INNOVATIVO</div>
+          <div class="desc">Reinventi ogni giorno il modo di comunicare.</div>
+        </div>
+        <div class="preview-card green">
+          <div class="label">Strategico</div>
+          <div class="word">STRATEGICO</div>
+          <div class="desc">Vedi il quadro completo.</div>
+        </div>
+      </div>
+      <button class="cta" id="btnToStartScreen">Avanti</button>
+    </section>
+
+    <section class="screen screen-start" id="screenStart">
+      <button class="cta" id="btnStart">Inizia</button>
+    </section>
 
     <section class="screen screen-intro active" id="screenIntro">
       <div class="deck-showcase">
@@ -810,6 +879,7 @@
       decisions: new Map(),
       undoStack: [],
       results: null,
+      phase: "cover"
       phase: "onboarding"
     };
 
@@ -825,6 +895,7 @@
     const cardWord = $("#cardWord");
     const cardSub = $("#cardSub");
     const guideNote = $("#guideNote");
+    const btnToStartScreen = $("#btnToStartScreen");
     const btnStart = $("#btnStart");
     const btnReveal = $("#btnReveal");
     const btnYes = $("#btnYes");
@@ -832,6 +903,7 @@
     const btnUndo = $("#btnUndo");
     const btnAnalyze = $("#btnAnalyze");
     const btnRestart = $("#btnRestart");
+    const activeCard = $("#activeCard");
     const cardCounter = $("#gameProgress");
     const countYes = $("#countYes");
     const countNo = $("#countNo");
@@ -841,6 +913,8 @@
     const aiOutput = $("#aiOutput");
 
     const TOTAL_CARDS = DECK.length;
+    const DRAG_THRESHOLD = 140;
+    const dragState = { active: false, startX: 0, pointerId: null, lastX: 0 };
 
     function shuffle(arr) {
       const a = [...arr];
@@ -875,6 +949,78 @@
       return DECK[index];
     }
 
+    function resetDragStyles() {
+      if (!activeCard) return;
+      activeCard.style.transition = "";
+      activeCard.style.transform = "";
+      activeCard.style.opacity = "";
+      activeCard.classList.remove("dragging", "swipe-positive", "swipe-negative");
+      if (!dragState.active) {
+        dragState.startX = 0;
+        dragState.lastX = 0;
+        dragState.pointerId = null;
+      }
+    }
+
+    function handlePointerDown(e) {
+      if (state.phase !== "playing" || !activeCard) return;
+      dragState.active = true;
+      dragState.startX = e.clientX;
+      dragState.lastX = e.clientX;
+      dragState.pointerId = typeof e.pointerId === "number" ? e.pointerId : null;
+      activeCard.classList.remove("swipe-positive", "swipe-negative");
+      activeCard.classList.add("dragging");
+      activeCard.style.transition = "none";
+      if (dragState.pointerId != null && typeof activeCard.setPointerCapture === "function") {
+        try {
+          activeCard.setPointerCapture(dragState.pointerId);
+        } catch (err) {}
+      }
+      e.preventDefault();
+    }
+
+    function handlePointerMove(e) {
+      if (!dragState.active || !activeCard) return;
+      const deltaX = e.clientX - dragState.startX;
+      const rotation = Math.max(-20, Math.min(20, deltaX / 12));
+      dragState.lastX = e.clientX;
+      activeCard.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+      activeCard.classList.toggle("swipe-positive", deltaX > DRAG_THRESHOLD);
+      activeCard.classList.toggle("swipe-negative", deltaX < -DRAG_THRESHOLD);
+    }
+
+    function handlePointerEnd(e) {
+      if (!activeCard || !dragState.active) return;
+      if (typeof e.clientX === "number") {
+        dragState.lastX = e.clientX;
+      }
+      const deltaX = dragState.lastX - dragState.startX;
+      dragState.active = false;
+      if (dragState.pointerId != null && typeof activeCard.releasePointerCapture === "function") {
+        try {
+          activeCard.releasePointerCapture(dragState.pointerId);
+        } catch (err) {}
+      }
+      dragState.pointerId = null;
+
+      if (Math.abs(deltaX) >= DRAG_THRESHOLD) {
+        const accept = deltaX > 0;
+        activeCard.style.transition = "transform 220ms ease, opacity 220ms ease";
+        activeCard.style.transform = `translateX(${accept ? 600 : -600}px) rotate(${accept ? 24 : -24}deg)`;
+        activeCard.style.opacity = "0";
+        setTimeout(() => {
+          decide(accept);
+          resetDragStyles();
+        }, 220);
+      } else {
+        activeCard.style.transition = "transform 200ms ease, box-shadow 220ms ease";
+        activeCard.style.transform = "";
+        setTimeout(() => {
+          resetDragStyles();
+        }, 200);
+      }
+    }
+
     function renderCard() {
       const c = currentCard();
       if (!c) return;
@@ -882,6 +1028,7 @@
       cardDimension.textContent = c.dimension || "";
       cardWord.textContent = (rawWord || c.text || "").trim().toUpperCase();
       cardSub.textContent = (rawSub || c.text || "").trim();
+      resetDragStyles();
     }
 
     function updateCounters() {
@@ -895,6 +1042,12 @@
     }
 
     function updateUI() {
+      if (document.body) {
+        document.body.dataset.phase = state.phase;
+      }
+      screenCover?.classList.toggle("active", state.phase === "cover");
+      screenCategories?.classList.toggle("active", state.phase === "categories");
+      screenStart?.classList.toggle("active", state.phase === "prestart");
       screenIntro?.classList.toggle("active", state.phase === "onboarding");
       screenGame?.classList.toggle("active", state.phase === "guide" || state.phase === "playing");
       screenEnd?.classList.toggle("active", state.phase === "complete");
@@ -902,6 +1055,7 @@
       if (cardStage) cardStage.classList.toggle("is-guide", state.phase === "guide");
 
       if (state.phase === "guide") {
+        resetDragStyles();
         cardDimension.textContent = "brand deck 4d";
         cardWord.textContent = "INIZIA!";
         cardSub.textContent = "Guarda la carta e scegli se tenerla o buttarla.";
@@ -914,6 +1068,33 @@
       } else {
         if (guideNote) guideNote.style.display = "none";
         if (btnReveal) btnReveal.style.display = "none";
+      }
+
+      const progressText = (() => {
+        if (state.phase === "complete") return `Completato ${TOTAL_CARDS} / ${TOTAL_CARDS}`;
+        if (state.phase === "playing") return `Carta ${Math.min(state.idx + 1, TOTAL_CARDS)} di ${TOTAL_CARDS}`;
+        return `Carta 1 di ${TOTAL_CARDS}`;
+      })();
+      if (cardCounter) cardCounter.textContent = progressText;
+
+      if (btnToStartScreen) btnToStartScreen.disabled = state.phase !== "categories";
+      if (btnStart) btnStart.disabled = state.phase !== "prestart";
+      if (btnYes) btnYes.disabled = state.phase !== "playing";
+      if (btnNo) btnNo.disabled = state.phase !== "playing";
+      if (btnUndo) btnUndo.disabled = state.phase !== "playing" || state.undoStack.length === 0;
+      if (btnAnalyze) btnAnalyze.disabled = state.phase !== "complete";
+
+      if (state.phase !== "complete" && aiBox) {
+        aiBox.style.display = "none";
+      }
+
+      updateCounters();
+
+      if (!dragState.active && state.phase !== "playing") {
+        resetDragStyles();
+      }
+    }
+
       }
 
       const progressText = (() => {
@@ -1021,6 +1202,26 @@
       }
     }
 
+    screenCover?.addEventListener("click", () => {
+      if (state.phase !== "cover") return;
+      state.phase = "categories";
+      updateUI();
+    });
+
+    screenCover?.addEventListener("keydown", (e) => {
+      if (state.phase !== "cover") return;
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        state.phase = "categories";
+        updateUI();
+      }
+    });
+
+    btnToStartScreen?.addEventListener("click", () => {
+      state.phase = "prestart";
+      updateUI();
+    });
+
     btnStart?.addEventListener("click", startDeck);
     btnReveal?.addEventListener("click", revealFirstCard);
     btnYes?.addEventListener("click", () => decide(true));
@@ -1033,11 +1234,37 @@
       state.decisions.clear();
       state.undoStack = [];
       state.results = null;
+      state.phase = "cover";
       state.phase = "onboarding";
       if (aiBox) aiBox.style.display = "none";
       if (aiOutput) aiOutput.textContent = "{ }";
       updateUI();
     });
+
+    activeCard?.addEventListener("pointerdown", handlePointerDown);
+    activeCard?.addEventListener("pointermove", handlePointerMove);
+    activeCard?.addEventListener("pointerup", handlePointerEnd);
+    activeCard?.addEventListener("pointercancel", handlePointerEnd);
+    activeCard?.addEventListener("pointerleave", (e) => {
+      if (dragState.active) handlePointerEnd(e);
+    });
+
+    window.addEventListener("keydown", (e) => {
+      const key = e.key.toLowerCase();
+      if (state.phase === "cover" && (key === "enter" || key === " ")) {
+        state.phase = "categories";
+        updateUI();
+        return;
+      }
+      if (state.phase === "categories" && (key === "enter" || key === " ")) {
+        state.phase = "prestart";
+        updateUI();
+        return;
+      }
+      if (state.phase === "prestart" && (key === "enter" || key === " ")) {
+        startDeck();
+        return;
+      }
 
     window.addEventListener("keydown", (e) => {
       const key = e.key.toLowerCase();
