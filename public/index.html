@@ -6,401 +6,715 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg: #f4f4f7;
-      --card-bg: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
-      --accent: #6f2dbd;
-      --border: #e5e7eb;
-      --radius: 24px;
-      --shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
-      --yes: #111827;
-      --no: #e5e7eb;
+      --bg-dark: #18253f;
+      --bg-light: #223a63;
+      --card: #ffffff;
+      --card-shadow: 0 28px 60px rgba(10, 14, 35, 0.45);
+      --outline: rgba(255, 255, 255, 0.18);
+      --yellow: #f7d447;
+      --teal: #3cc5c2;
+      --orange: #ffb44d;
+      --red: #ff595e;
+      --green: #33c26d;
+      --text-dark: #10223a;
+      --text-light: #f1f5ff;
+      --muted: rgba(241, 245, 255, 0.72);
+      --radius: 32px;
+      --transition: 180ms ease;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 40%, #f4f4f7 100%);
-      color: var(--text);
+      background: radial-gradient(100% 140% at 50% 0%, var(--bg-light) 0%, var(--bg-dark) 65%);
+      color: var(--text-light);
+      font-family: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 32px 16px 48px;
     }
-    .shell {
-      width: 100%;
-      max-width: 960px;
-      background: #f9fafb;
-      border-radius: 32px;
-      box-shadow: var(--shadow);
-      padding: 24px 28px 28px;
+
+    .app {
+      width: min(1200px, 100%);
       display: flex;
       flex-direction: column;
-      gap: 16px;
-    }
-    header {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    header .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    header img {
-      height: 40px;
-      width: auto;
-    }
-    header .brand-text {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
-    }
-    header .brand-title {
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-    header .tagline {
-      font-size: 12px;
-      color: var(--muted);
+      gap: 32px;
     }
 
-    main {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      gap: 20px;
-    }
-    @media (max-width: 780px) {
-      main { grid-template-columns: 1fr; }
+    body[data-phase="cover"] .app {
+      gap: 0;
     }
 
-    .card-shell {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 32px 32px 28px;
-      box-shadow: inset 0 0 0 1px var(--border);
+    body[data-phase="cover"] .top-bar {
+      display: none;
+    }
+
+    .top-bar {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      min-height: 320px;
-      position: relative;
-      overflow: hidden;
-    }
-    .card-shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(111,45,189,0.06), transparent 60%);
-      pointer-events: none;
-    }
-
-    .card-top-label {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .card-content {
-      position: relative;
-      z-index: 1;
-    }
-    .card-word {
-      font-size: 40px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .card-sub {
-      font-size: 18px;
-      line-height: 1.4;
-      max-width: 360px;
-    }
-
-    .card-actions {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-top: 28px;
-      position: relative;
-      z-index: 1;
-    }
-    .card-actions-left {
-      display: flex;
-      gap: 10px;
-    }
-    .btn {
-      border-radius: 999px;
-      padding: 10px 24px;
-      font-weight: 600;
-      font-size: 14px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: transform 0.04s ease, box-shadow 0.16s ease, background 0.16s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    .btn:active { transform: translateY(1px); box-shadow: none; }
-    .btn-primary {
-      background: var(--yes);
-      color: #f9fafb;
-      box-shadow: 0 10px 20px rgba(15,23,42,0.4);
-    }
-    .btn-secondary {
-      background: #f9fafb;
-      color: #111827;
-      border-color: var(--border);
-    }
-    .btn-ghost {
-      background: transparent;
-      color: var(--muted);
-      border-color: transparent;
-      font-size: 12px;
-      padding-inline: 0;
-    }
-
-    .card-meta {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .mini-score {
-      font-size: 16px;
-      font-weight: 600;
-      display: flex;
       gap: 8px;
-      align-items: baseline;
-    }
-
-    .side-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      font-size: 13px;
-    }
-    .side-box {
-      border-radius: 20px;
-      background: #111827;
-      color: #f9fafb;
-      padding: 18px 18px 16px;
-    }
-    .side-box.light {
-      background: #ffffff;
-      color: var(--text);
-      box-shadow: inset 0 0 0 1px var(--border);
-    }
-    .side-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .side-desc {
-      font-size: 12px;
-      color: #e5e7eb;
-    }
-    .side-desc.light {
-      color: var(--muted);
-    }
-
-    .progress-line {
-      margin-top: 12px;
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .bar {
-      height: 6px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      overflow: hidden;
-      margin-top: 6px;
-    }
-    .bar span {
-      display: block;
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #6f2dbd, #9b5de5);
-    }
-
-    /* Schermata iniziale / finale */
-    .centered {
-      text-align: left;
-    }
-    .center-big {
-      font-size: 32px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      margin-bottom: 8px;
-    }
-    .center-sub {
-      font-size: 18px;
-      max-width: 360px;
-      line-height: 1.4;
-      color: var(--muted);
-    }
-
-    .final-score {
-      font-size: 22px;
-      font-weight: 600;
-      margin-top: 18px;
-    }
-    .final-score span {
-      display: inline-block;
-      min-width: 36px;
       text-align: center;
     }
 
-    .ai-box {
-      margin-top: 18px;
-      border-radius: 16px;
-      background: #111827;
-      color: #f9fafb;
-      padding: 14px 16px;
-      font-size: 12px;
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(15, 28, 52, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      font-size: 13px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
     }
+
+    .brand-mark img {
+      height: 32px;
+      width: 32px;
+      object-fit: contain;
+    }
+
+    .app h1 {
+      font-size: clamp(32px, 4vw, 44px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .app p.lead {
+      max-width: 560px;
+      text-align: center;
+      line-height: 1.6;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .screen {
+      width: 100%;
+      display: none;
+      animation: fade-in 220ms ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .screen-cover,
+    .screen-categories,
+    .screen-start {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      text-align: center;
+    }
+
+    .screen-cover {
+      justify-content: center;
+      min-height: clamp(420px, 70vh, 780px);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .screen-start {
+      justify-content: center;
+      min-height: clamp(260px, 50vh, 420px);
+    }
+
+    .screen-cover:focus-visible {
+      outline: 2px solid var(--yellow);
+      outline-offset: 18px;
+    }
+
+    .cover-figure {
+      width: clamp(260px, 55vw, 420px);
+      aspect-ratio: 3 / 4;
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(12, 22, 44, 0.72);
+    }
+
+    .cover-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .screen-categories h2 {
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .preview-copy {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .card-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+    }
+
+    .screen-categories .card-preview-grid {
+      width: min(720px, 100%);
+      margin: 0 auto;
+    }
+
+    .screen-start .lead {
+      max-width: 520px;
+    }
+
+    .preview-card {
+      border-radius: 28px;
+      padding: 20px 18px;
+      color: var(--text-dark);
+      position: relative;
+      box-shadow: 0 22px 45px rgba(11, 16, 31, 0.28);
+    }
+
+    .preview-card.yellow { background: #f8e27a; }
+    .preview-card.teal { background: #75e3d4; }
+    .preview-card.cyan { background: #7ee1ff; }
+    .preview-card.green { background: #7ae5a0; }
+
+    .preview-card .label {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.56);
+    }
+
+    .preview-card .word {
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      margin: 12px 0 6px;
+    }
+
+    .preview-card .desc {
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.68);
+    }
+
+    .cta {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--text-dark);
+      background: var(--yellow);
+      box-shadow: 0 20px 44px rgba(247, 212, 71, 0.35);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 60px rgba(247, 212, 71, 0.45);
+    }
+
+    .cta:active {
+      transform: translateY(0);
+    }
+
+    .screen-game {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .game-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .game-header .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(15, 28, 52, 0.42);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    .game-header .logo img {
+      height: 26px;
+      width: 26px;
+      object-fit: contain;
+    }
+
+    .game-header .progress {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(18px, 4vw, 48px);
+      align-items: flex-end;
+    }
+
+    .stage.is-guide .stack-card { opacity: 0.35; }
+    .stage.is-guide .stack-count,
+    .stage.is-guide .stack-label { opacity: 0.4; }
+
+    .card-stack,
+    .card-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .stack-card {
+      width: clamp(160px, 24vw, 220px);
+      aspect-ratio: 2.5 / 4;
+      border-radius: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--card-shadow);
+      color: rgba(255, 255, 255, 0.92);
+      position: relative;
+    }
+
+    .stack-card::after {
+      content: "";
+      position: absolute;
+      inset: 22px;
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .card-stack.negative .stack-card { background: linear-gradient(180deg, #ff6b6f 0%, #d94155 100%); }
+    .card-stack.positive .stack-card { background: linear-gradient(180deg, #52dc7c 0%, #1fa45c 100%); }
+
+    .stack-symbol {
+      font-size: clamp(40px, 8vw, 64px);
+      font-weight: 700;
+    }
+
+    .stack-count {
+      font-size: clamp(26px, 5vw, 38px);
+    }
+
+    .stack-label {
+      color: rgba(255, 255, 255, 0.76);
+    }
+
+    .card-main {
+      width: clamp(210px, 28vw, 280px);
+      aspect-ratio: 2.5 / 4;
+      border-radius: 40px;
+      background: var(--card);
+      color: var(--text-dark);
+      box-shadow: var(--card-shadow);
+      position: relative;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      transition: transform 180ms ease, box-shadow 220ms ease, opacity 180ms ease;
+      touch-action: pan-y;
+    }
+
+    .card-main::before {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border-radius: 30px;
+      border: 1px solid rgba(16, 34, 58, 0.06);
+      pointer-events: none;
+    }
+
+    .card-main.dragging {
+      transition: none;
+      cursor: grabbing;
+    }
+
+    .card-main.swipe-positive {
+      box-shadow: 0 28px 60px rgba(50, 210, 120, 0.35);
+    }
+
+    .card-main.swipe-negative {
+      box-shadow: 0 28px 60px rgba(255, 89, 94, 0.35);
+    }
+
+    .card-badge {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(16, 34, 58, 0.6);
+      font-weight: 600;
+    }
+
+    .card-word {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+    }
+
+    .card-sub {
+      font-size: 16px;
+      line-height: 1.5;
+      color: rgba(16, 34, 58, 0.72);
+      max-width: 220px;
+    }
+
+    .guide-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: rgba(16, 34, 58, 0.56);
+    }
+
+    .reveal-btn {
+      margin-top: 24px;
+      border: none;
+      border-radius: 999px;
+      background: var(--bg-light);
+      color: #fff;
+      padding: 12px 24px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 16px 32px rgba(34, 58, 99, 0.35);
+    }
+
+    .reveal-btn:hover { transform: translateY(-2px); }
+    .reveal-btn:active { transform: translateY(0); }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(18px, 6vw, 80px);
+      flex-wrap: wrap;
+    }
+
+    .control-btn {
+      min-width: 150px;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 30px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #fff;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+      transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .control-btn:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.05);
+    }
+
+    .control-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+      transform: none;
+      box-shadow: none;
+      filter: none;
+    }
+
+    .control-btn.negative { background: linear-gradient(180deg, #ff6b6f 0%, #d94155 100%); }
+    .control-btn.positive { background: linear-gradient(180deg, #52dc7c 0%, #1fa45c 100%); }
+    .control-btn.undo {
+      background: rgba(15, 28, 52, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      min-width: auto;
+      padding: 14px 22px;
+    }
+
+    .screen-end {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .final-stage {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: clamp(18px, 5vw, 48px);
+      align-items: center;
+      width: 100%;
+    }
+
+    .side-result {
+      border-radius: 36px;
+      padding: 32px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--card-shadow);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    .side-result .count {
+      font-size: clamp(40px, 6vw, 52px);
+    }
+
+    .side-result.negative { background: linear-gradient(200deg, #ff6b6f 0%, #d94155 100%); }
+    .side-result.positive { background: linear-gradient(200deg, #52dc7c 0%, #1fa45c 100%); }
+
+    .final-card {
+      width: min(320px, 90vw);
+      margin: 0 auto;
+    }
+
+    .final-card .card-sub {
+      max-width: 260px;
+    }
+
+    .final-card .control-btn {
+      width: 100%;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .ai-box {
+      margin-top: 24px;
+      width: 100%;
+      background: rgba(12, 22, 44, 0.8);
+      border-radius: 24px;
+      padding: 18px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .ai-box strong {
+      letter-spacing: 0.08em;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
     .ai-output {
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: #020617;
-      max-height: 260px;
+      margin-top: 12px;
+      max-height: 240px;
       overflow: auto;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 11px;
+      font-size: 12px;
+      line-height: 1.5;
+      background: rgba(3, 10, 24, 0.6);
+      border-radius: 16px;
+      padding: 14px;
+      font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      color: #e2e8f0;
       white-space: pre-wrap;
       word-break: break-word;
     }
+
+    .restart {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      color: var(--muted);
+      padding: 12px 28px;
+      border-radius: 999px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color var(--transition), border var(--transition), transform var(--transition);
+    }
+
+    .restart:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 900px) {
+      .controls { gap: 24px; }
+      .control-btn { min-width: 140px; }
+      .game-header { justify-content: center; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding-bottom: 64px; }
+      .stage { grid-template-columns: 1fr; }
+      .card-stack { order: 1; }
+      .card-center { order: 0; }
+    }
   </style>
 </head>
-<body>
-  <div class="shell">
-    <header>
-      <div class="brand">
+<body data-phase="cover">
+  <div class="app">
+    <div class="top-bar">
+      <div class="brand-mark">
         <img src="./assets/logo.png" alt="Brand Deck 4D" />
-        <div>
-          <div class="brand-text">brand deck 4d</div>
-          <div class="brand-title">Mazzo di carte per l’identità di marca</div>
+        brand deck 4d
+      </div>
+      <h1>Mazzo di carte</h1>
+      <p class="lead">Where Ideas Come to Life. Anche nella strategia dei brand.</p>
+    </div>
+
+    <section class="screen screen-cover active" id="screenCover" tabindex="0" aria-label="Apri il Brand Deck 4D">
+      <div class="cover-figure">
+        <img src="./assets/cover-placeholder.svg" alt="Placeholder Brand Deck 4D" />
+      </div>
+    </section>
+
+    <section class="screen screen-categories" id="screenCategories">
+      <h2>Fronte carte, 1 per tipo</h2>
+      <div class="card-preview-grid">
+        <div class="preview-card yellow">
+          <div class="label">Autentico</div>
+          <div class="word">AUTENTICO</div>
+          <div class="desc">Ciò che crei ti rappresenta.</div>
+        </div>
+        <div class="preview-card teal">
+          <div class="label">Affidabile</div>
+          <div class="word">AFFIDABILE</div>
+          <div class="desc">Prometti solo ciò che puoi mantenere.</div>
+        </div>
+        <div class="preview-card cyan">
+          <div class="label">Innovativo</div>
+          <div class="word">INNOVATIVO</div>
+          <div class="desc">Reinventi ogni giorno il modo di comunicare.</div>
+        </div>
+        <div class="preview-card green">
+          <div class="label">Strategico</div>
+          <div class="word">STRATEGICO</div>
+          <div class="desc">Vedi il quadro completo.</div>
         </div>
       </div>
-      <div class="tagline">Where Ideas Come to Life. Anche nella strategia dei brand.</div>
-    </header>
+      <button class="cta" id="btnToStartScreen">Avanti</button>
+    </section>
 
-    <main>
-      <!-- AREA CARTE / SCHERMATE -->
-      <section class="card-shell" id="cardShell">
-        <div class="card-content" id="screenIntro">
-          <div class="card-top-label">Ecco il tuo mazzo</div>
-          <div class="centered">
-            <div class="center-big">Inizia!</div>
-            <p class="center-sub">
-              Guarda ogni carta e decidi se tenerla o scartarla.<br/>
-              Pensa al brand come se fosse una persona: lo rappresenta davvero?
-            </p>
+    <section class="screen screen-start" id="screenStart">
+      <button class="cta" id="btnStart">Inizia</button>
+    </section>
+
+    <section class="screen screen-game" id="screenGame">
+      <div class="game-header">
+        <div class="logo">
+          <img src="./assets/logo.png" alt="Kaffeina" />
+          brand deck 4d
+        </div>
+        <div class="progress" id="gameProgress">Carta 1 di 80</div>
+      </div>
+      <div class="stage is-guide" id="cardStage">
+        <div class="card-stack negative">
+          <div class="stack-card">
+            <span class="stack-symbol">✕</span>
+          </div>
+          <div class="stack-count" id="countNo">0</div>
+          <div class="stack-label">NO</div>
+        </div>
+        <div class="card-center">
+          <div class="card-main" id="activeCard">
+            <div class="card-badge" id="cardDimension">brand deck 4d</div>
+            <div class="card-word" id="cardWord">Inizia!</div>
+            <div class="card-sub" id="cardSub">Guarda la carta e scegli se tenerla o buttarla.</div>
+            <p class="guide-note" id="guideNote">Pensa al brand come se fosse una persona: lo rappresenta davvero?</p>
+            <button class="reveal-btn" id="btnReveal">Mostra la prima carta</button>
           </div>
         </div>
-
-        <div class="card-content" id="screenGame" style="display:none">
-          <div class="card-top-label">Carta</div>
-          <div>
-            <div class="card-word" id="cardWord">AFFIDABILE</div>
-            <div class="card-sub" id="cardSub">Prometti solo ciò che puoi mantenere</div>
+        <div class="card-stack positive">
+          <div class="stack-card">
+            <span class="stack-symbol">✓</span>
           </div>
+          <div class="stack-count" id="countYes">0</div>
+          <div class="stack-label">SÌ</div>
         </div>
+      </div>
+      <div class="controls">
+        <button class="control-btn negative" id="btnNo">Scarta</button>
+        <button class="control-btn undo" id="btnUndo">Undo</button>
+        <button class="control-btn positive" id="btnYes">Tieni</button>
+      </div>
+    </section>
 
-        <div class="card-content" id="screenEnd" style="display:none">
-          <div class="card-top-label">Mazzo completato</div>
-          <div class="centered">
-            <div class="center-big">Fatto!</div>
-            <p class="center-sub">
-              Ora puoi visualizzare il risultato del Brand Deck 4D e analizzarlo con l’intelligenza artificiale.
-            </p>
-            <div class="final-score">
-              <span id="finalYes">0</span> tenute &nbsp;&nbsp;|&nbsp;&nbsp;
-              <span id="finalNo">0</span> scartate
-            </div>
-          </div>
+    <section class="screen screen-end" id="screenEnd">
+      <div class="final-stage">
+        <div class="side-result negative">
+          <div class="count" id="finalNo">0</div>
+          <div>Scartate</div>
         </div>
-
-        <div class="card-actions">
-          <div class="card-actions-left">
-            <button class="btn btn-primary" id="btnYes">SÌ</button>
-            <button class="btn btn-secondary" id="btnNo">NO</button>
-          </div>
-          <div class="card-meta">
-            <button class="btn btn-ghost" id="btnUndo">UNDO</button>
-            <div class="mini-score">
-              <span id="miniYes">0</span>
-              <span>/</span>
-              <span id="miniNo">0</span>
-            </div>
-            <div id="cardCounter" class="muted">Carta 0 di 80</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PANNELLO LATERALE -->
-      <aside class="side-panel">
-        <div class="side-box">
-          <div class="side-title">Come funziona</div>
-          <p class="side-desc">
-            Una carta alla volta. Tienila se ti sembra aderente al brand, altrimenti scartala. 
-            Alla fine otterrai un profilo sintetico basato su 4 dimensioni e 13 archetipi.
-          </p>
-          <div class="progress-line">
-            <span>Progresso</span>
-            <span id="progressLabel">0 / 80</span>
-          </div>
-          <div class="bar">
-            <span id="progressBar"></span>
-          </div>
-        </div>
-
-        <div class="side-box light">
-          <div class="side-title">Stato del mazzo</div>
-          <p class="side-desc light">
-            Puoi tornare indietro di una sola carta con <strong>UNDO</strong> se cambi idea.
-          </p>
-          <div class="progress-line">
-            <span>Carte viste</span>
-            <span id="seenLabel">0</span>
-          </div>
-          <div class="progress-line">
-            <span>Carte rimanenti</span>
-            <span id="remainLabel">80</span>
-          </div>
-        </div>
-
-        <div class="side-box light" id="aiPanel" style="display:none">
-          <div class="side-title">Analisi AI</div>
-          <p class="side-desc light">
-            I risultati vengono inviati all’Agente KAI per una lettura strategica del brand.
-          </p>
-          <button class="btn btn-primary" id="btnAnalyze" style="margin-top:10px; width:100%;">
-            Analizza con AI
-          </button>
+        <div class="card-main final-card">
+          <div class="card-badge">brand deck 4d</div>
+          <div class="card-word">Fatto!</div>
+          <div class="card-sub">Ora potrai visualizzare il risultato del Brand Deck 4D e analizzarlo con l’intelligenza artificiale.</div>
+          <button class="control-btn positive" id="btnAnalyze">Analizza con AI</button>
           <div class="ai-box" id="aiBox" style="display:none;">
-            <div>Output dell’Agente:</div>
+            <strong>Output dell’agente</strong>
             <div class="ai-output" id="aiOutput">{ }</div>
           </div>
         </div>
-      </aside>
-    </main>
+        <div class="side-result positive">
+          <div class="count" id="finalYes">0</div>
+          <div>Tenute</div>
+        </div>
+      </div>
+      <button class="restart" id="btnRestart">Ricomincia</button>
+    </section>
   </div>
 
   <script>
-    // --- DATI DEL MAZZO (80 CARTE, COME NEL MANUALE) ---
     const DECK = [
+
       {"id":1,"text":"Autentico – Ciò che crei ti rappresenta.","dimension":"Essence","archetypes":["Innocente","Amico"]},
       {"id":2,"text":"Visionario – Vedi strade dove altri vedono muri.","dimension":"Essence","archetypes":["Creatore","Mago"]},
       {"id":3,"text":"Ironico – Usi il sorriso per dire cose serie.","dimension":"Essence","archetypes":["Buffone","Ribelle"]},
@@ -484,170 +798,276 @@
       {"id":78,"text":"Affabile – Le relazioni prima dei ruoli.","dimension":"Impact","archetypes":["Amico","Innocente"]},
       {"id":79,"text":"Credibile – Ogni azione parla più delle parole.","dimension":"Impact","archetypes":["Eroe","Sovrano"]},
       {"id":80,"text":"Connesso – Trasformi i progetti in legami.","dimension":"Impact","archetypes":["Caregiver","Amico"]}
+
     ];
 
     const state = {
       order: [],
-      idx: -1, // -1 = ancora su intro
-      decisions: new Map(), // id -> true (SÌ) | false (NO)
+      idx: 0,
+      decisions: new Map(),
       undoStack: [],
-      results: null
+      results: null,
+      phase: "cover"
     };
 
-    // shortcut DOM
     const $ = (sel) => document.querySelector(sel);
 
-    const screenIntro = $("#screenIntro");
+    const screenCover = $("#screenCover");
+    const screenCategories = $("#screenCategories");
+    const screenStart = $("#screenStart");
     const screenGame = $("#screenGame");
     const screenEnd = $("#screenEnd");
-
+    const cardStage = $("#cardStage");
+    const cardDimension = $("#cardDimension");
     const cardWord = $("#cardWord");
     const cardSub = $("#cardSub");
-    const cardCounter = $("#cardCounter");
-    const miniYes = $("#miniYes");
-    const miniNo = $("#miniNo");
-    const finalYes = $("#finalYes");
-    const finalNo = $("#finalNo");
-    const progressLabel = $("#progressLabel");
-    const progressBar = $("#progressBar");
-    const seenLabel = $("#seenLabel");
-    const remainLabel = $("#remainLabel");
-
+    const guideNote = $("#guideNote");
+    const btnToStartScreen = $("#btnToStartScreen");
+    const btnStart = $("#btnStart");
+    const btnReveal = $("#btnReveal");
     const btnYes = $("#btnYes");
     const btnNo = $("#btnNo");
     const btnUndo = $("#btnUndo");
     const btnAnalyze = $("#btnAnalyze");
-    const aiPanel = $("#aiPanel");
+    const btnRestart = $("#btnRestart");
+    const activeCard = $("#activeCard");
+    const cardCounter = $("#gameProgress");
+    const countYes = $("#countYes");
+    const countNo = $("#countNo");
+    const finalYes = $("#finalYes");
+    const finalNo = $("#finalNo");
     const aiBox = $("#aiBox");
     const aiOutput = $("#aiOutput");
 
-    function shuffle(arr){
+    const TOTAL_CARDS = DECK.length;
+    const DRAG_THRESHOLD = 140;
+    const dragState = { active: false, startX: 0, pointerId: null, lastX: 0 };
+
+    function shuffle(arr) {
       const a = [...arr];
-      for(let i=a.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [a[i],a[j]] = [a[j],a[i]];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
       }
       return a;
     }
 
-    function startDeck(){
+    function startDeck() {
       state.order = shuffle([...DECK.keys()]);
       state.idx = 0;
       state.decisions.clear();
       state.undoStack = [];
       state.results = null;
-      screenIntro.style.display = "none";
-      screenGame.style.display = "";
-      screenEnd.style.display = "none";
-      aiPanel.style.display = "none";
-      aiBox.style.display = "none";
+      state.phase = "guide";
+      if (aiBox) aiBox.style.display = "none";
+      if (aiOutput) aiOutput.textContent = "{ }";
       updateUI();
     }
 
-    function currentCard(){
-      if(state.idx < 0 || state.idx >= state.order.length) return null;
+    function revealFirstCard() {
+      if (state.phase !== "guide") return;
+      state.phase = "playing";
+      updateUI();
+    }
+
+    function currentCard() {
+      if (state.idx < 0 || state.idx >= state.order.length) return null;
       const index = state.order[state.idx];
       return DECK[index];
     }
 
-    function renderCard(){
-      const c = currentCard();
-      if(!c) return;
-      const [rawWord, rawSub] = c.text.split("–");
-      cardWord.textContent = (rawWord || "").trim().toUpperCase();
-      cardSub.textContent = (rawSub || c.text).trim();
-      cardCounter.textContent = `Carta ${state.idx+1} di ${DECK.length}`;
+    function resetDragStyles() {
+      if (!activeCard) return;
+      activeCard.style.transition = "";
+      activeCard.style.transform = "";
+      activeCard.style.opacity = "";
+      activeCard.classList.remove("dragging", "swipe-positive", "swipe-negative");
+      if (!dragState.active) {
+        dragState.startX = 0;
+        dragState.lastX = 0;
+        dragState.pointerId = null;
+      }
     }
 
-    function updateCounters(){
-      const total = DECK.length;
-      const seen = Math.max(0, state.idx);
-      const yes = [...state.decisions.values()].filter(v => v === true).length;
-      const no = [...state.decisions.values()].filter(v => v === false).length;
-      const remain = total - seen;
-
-      miniYes.textContent = yes;
-      miniNo.textContent = no;
-      finalYes.textContent = yes;
-      finalNo.textContent = no;
-      progressLabel.textContent = `${seen} / ${total}`;
-      progressBar.style.width = `${(seen/total)*100}%`;
-      seenLabel.textContent = seen;
-      remainLabel.textContent = remain;
+    function handlePointerDown(e) {
+      if (state.phase !== "playing" || !activeCard) return;
+      dragState.active = true;
+      dragState.startX = e.clientX;
+      dragState.lastX = e.clientX;
+      dragState.pointerId = typeof e.pointerId === "number" ? e.pointerId : null;
+      activeCard.classList.remove("swipe-positive", "swipe-negative");
+      activeCard.classList.add("dragging");
+      activeCard.style.transition = "none";
+      if (dragState.pointerId != null && typeof activeCard.setPointerCapture === "function") {
+        try {
+          activeCard.setPointerCapture(dragState.pointerId);
+        } catch (err) {}
+      }
+      e.preventDefault();
     }
 
-    function updateUI(){
-      const total = DECK.length;
-      if(state.idx >= total){
-        // fine mazzo
-        screenIntro.style.display = "none";
-        screenGame.style.display = "none";
-        screenEnd.style.display = "";
-        aiPanel.style.display = "";
-        buildResults();
-      } else if(state.idx < 0){
-        // intro
-        screenIntro.style.display = "";
-        screenGame.style.display = "none";
-        screenEnd.style.display = "none";
+    function handlePointerMove(e) {
+      if (!dragState.active || !activeCard) return;
+      const deltaX = e.clientX - dragState.startX;
+      const rotation = Math.max(-20, Math.min(20, deltaX / 12));
+      dragState.lastX = e.clientX;
+      activeCard.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+      activeCard.classList.toggle("swipe-positive", deltaX > DRAG_THRESHOLD);
+      activeCard.classList.toggle("swipe-negative", deltaX < -DRAG_THRESHOLD);
+    }
+
+    function handlePointerEnd(e) {
+      if (!activeCard || !dragState.active) return;
+      if (typeof e.clientX === "number") {
+        dragState.lastX = e.clientX;
+      }
+      const deltaX = dragState.lastX - dragState.startX;
+      dragState.active = false;
+      if (dragState.pointerId != null && typeof activeCard.releasePointerCapture === "function") {
+        try {
+          activeCard.releasePointerCapture(dragState.pointerId);
+        } catch (err) {}
+      }
+      dragState.pointerId = null;
+
+      if (Math.abs(deltaX) >= DRAG_THRESHOLD) {
+        const accept = deltaX > 0;
+        activeCard.style.transition = "transform 220ms ease, opacity 220ms ease";
+        activeCard.style.transform = `translateX(${accept ? 600 : -600}px) rotate(${accept ? 24 : -24}deg)`;
+        activeCard.style.opacity = "0";
+        setTimeout(() => {
+          decide(accept);
+          resetDragStyles();
+        }, 220);
       } else {
-        // in gioco
-        screenIntro.style.display = "none";
-        screenGame.style.display = "";
-        screenEnd.style.display = "none";
-        renderCard();
+        activeCard.style.transition = "transform 200ms ease, box-shadow 220ms ease";
+        activeCard.style.transform = "";
+        setTimeout(() => {
+          resetDragStyles();
+        }, 200);
       }
-      updateCounters();
-      btnUndo.disabled = state.undoStack.length === 0 || state.idx < 0 || state.idx > total;
     }
 
-    function decide(yes){
-      if(state.idx < 0) {
-        // dalla intro, il primo click su sì/no fa partire
-        startDeck();
-        return;
-      }
+    function renderCard() {
       const c = currentCard();
-      if(!c) return;
+      if (!c) return;
+      const [rawWord, rawSub] = c.text.split("–");
+      cardDimension.textContent = c.dimension || "";
+      cardWord.textContent = (rawWord || c.text || "").trim().toUpperCase();
+      cardSub.textContent = (rawSub || c.text || "").trim();
+      resetDragStyles();
+    }
+
+    function updateCounters() {
+      const yes = [...state.decisions.values()].filter((v) => v === true).length;
+      const no = [...state.decisions.values()].filter((v) => v === false).length;
+
+      if (countYes) countYes.textContent = String(yes);
+      if (countNo) countNo.textContent = String(no);
+      if (finalYes) finalYes.textContent = String(yes);
+      if (finalNo) finalNo.textContent = String(no);
+    }
+
+    function updateUI() {
+      if (document.body) {
+        document.body.dataset.phase = state.phase;
+      }
+      screenCover?.classList.toggle("active", state.phase === "cover");
+      screenCategories?.classList.toggle("active", state.phase === "categories");
+      screenStart?.classList.toggle("active", state.phase === "prestart");
+      screenGame?.classList.toggle("active", state.phase === "guide" || state.phase === "playing");
+      screenEnd?.classList.toggle("active", state.phase === "complete");
+
+      if (cardStage) cardStage.classList.toggle("is-guide", state.phase === "guide");
+
+      if (state.phase === "guide") {
+        resetDragStyles();
+        cardDimension.textContent = "brand deck 4d";
+        cardWord.textContent = "INIZIA!";
+        cardSub.textContent = "Guarda la carta e scegli se tenerla o buttarla.";
+        if (guideNote) guideNote.style.display = "";
+        if (btnReveal) btnReveal.style.display = "";
+      } else if (state.phase === "playing") {
+        renderCard();
+        if (guideNote) guideNote.style.display = "none";
+        if (btnReveal) btnReveal.style.display = "none";
+      } else {
+        if (guideNote) guideNote.style.display = "none";
+        if (btnReveal) btnReveal.style.display = "none";
+      }
+
+      const progressText = (() => {
+        if (state.phase === "complete") return `Completato ${TOTAL_CARDS} / ${TOTAL_CARDS}`;
+        if (state.phase === "playing") return `Carta ${Math.min(state.idx + 1, TOTAL_CARDS)} di ${TOTAL_CARDS}`;
+        return `Carta 1 di ${TOTAL_CARDS}`;
+      })();
+      if (cardCounter) cardCounter.textContent = progressText;
+
+      if (btnToStartScreen) btnToStartScreen.disabled = state.phase !== "categories";
+      if (btnStart) btnStart.disabled = state.phase !== "prestart";
+      if (btnYes) btnYes.disabled = state.phase !== "playing";
+      if (btnNo) btnNo.disabled = state.phase !== "playing";
+      if (btnUndo) btnUndo.disabled = state.phase !== "playing" || state.undoStack.length === 0;
+      if (btnAnalyze) btnAnalyze.disabled = state.phase !== "complete";
+
+      if (state.phase !== "complete" && aiBox) {
+        aiBox.style.display = "none";
+      }
+
+      updateCounters();
+
+      if (!dragState.active && state.phase !== "playing") {
+        resetDragStyles();
+      }
+    }
+
+    function decide(yes) {
+      if (state.phase !== "playing") return;
+      const c = currentCard();
+      if (!c) return;
       state.decisions.set(c.id, yes);
       state.undoStack.push({ id: c.id, decision: yes, idx: state.idx });
       state.idx++;
+      if (state.idx >= TOTAL_CARDS) {
+        buildResults();
+        state.phase = "complete";
+      }
       updateUI();
     }
 
-    function undo(){
+    function undo() {
       const last = state.undoStack.pop();
-      if(!last) return;
+      if (!last) return;
       state.decisions.delete(last.id);
       state.idx = last.idx;
+      state.phase = "playing";
       updateUI();
     }
 
-    function buildResults(){
-      const total = DECK.length;
+    function buildResults() {
       const selectedIds = [...state.decisions.entries()]
-        .filter(([_,v]) => v === true)
-        .map(([id,_]) => id);
-      const selectedCards = DECK.filter(c => selectedIds.includes(c.id));
+        .filter(([_, v]) => v === true)
+        .map(([id]) => id);
+      const selectedCards = DECK.filter((c) => selectedIds.includes(c.id));
 
-      const dims = { Essence:0, Purpose:0, Expression:0, Impact:0 };
+      const dims = { Essence: 0, Purpose: 0, Expression: 0, Impact: 0 };
       const archetypeKeys = ["Amante","Amico","Buffone","Caregiver","Creatore","Eroe","Esploratore","Innocente","Mago","Non Evoluto","Ribelle","Saggio","Sovrano"];
-      const arch = Object.fromEntries(archetypeKeys.map(k => [k,0]));
+      const arch = Object.fromEntries(archetypeKeys.map((k) => [k, 0]));
 
-      for(const c of selectedCards){
-        if(dims[c.dimension] != null) dims[c.dimension]++;
-        for(const a of c.archetypes){
-          if(arch[a] != null) arch[a]++;
+      for (const c of selectedCards) {
+        if (dims[c.dimension] != null) dims[c.dimension]++;
+        for (const a of c.archetypes || []) {
+          if (arch[a] != null) arch[a]++;
         }
       }
 
       state.results = {
-        total,
+        total: TOTAL_CARDS,
         selected: selectedCards.length,
         byDimension: dims,
         byArchetype: arch,
-        decisions: [...state.decisions.entries()].map(([id,accepted]) => {
-          const c = DECK.find(x => x.id === id);
+        decisions: [...state.decisions.entries()].map(([id, accepted]) => {
+          const c = DECK.find((x) => x.id === id);
           return {
             id,
             accepted,
@@ -659,13 +1079,14 @@
       };
     }
 
-    async function analyzeWithAI(){
-      if(!state.results){
+    async function analyzeWithAI() {
+      if (!state.results) {
         alert("Completa prima il mazzo.");
         return;
       }
-      aiBox.style.display = "";
-      aiOutput.textContent = "Analisi in corso...";
+      if (aiBox) aiBox.style.display = "";
+      if (aiOutput) aiOutput.textContent = "Analisi in corso...";
+      if (btnAnalyze) btnAnalyze.disabled = true;
 
       try {
         const res = await fetch("/api/analyze", {
@@ -674,34 +1095,90 @@
           body: JSON.stringify(state.results)
         });
         const data = await res.json();
-        if(!data.ok){
-          aiOutput.textContent = "Errore nell'analisi AI: " + (data.error || "sconosciuto");
+        if (!data.ok) {
+          if (aiOutput) aiOutput.textContent = "Errore nell'analisi AI: " + (data.error || "sconosciuto");
           return;
         }
-        aiOutput.textContent = JSON.stringify(data.analysis, null, 2);
+        if (aiOutput) aiOutput.textContent = JSON.stringify(data.analysis, null, 2);
       } catch (err) {
-        aiOutput.textContent = "Errore di rete o server: " + String(err);
+        if (aiOutput) aiOutput.textContent = "Errore di rete o server: " + String(err);
+      } finally {
+        if (btnAnalyze) btnAnalyze.disabled = false;
       }
     }
 
-    // Eventi
-    btnYes.addEventListener("click", () => decide(true));
-    btnNo.addEventListener("click", () => decide(false));
-    btnUndo.addEventListener("click", undo);
-    btnAnalyze.addEventListener("click", analyzeWithAI);
-
-    // dalla intro: primo click su SÌ/NO fa partire il mazzo
-    screenIntro.addEventListener("click", startDeck);
-
-    // scorciatoie tastiera
-    window.addEventListener("keydown", (e) => {
-      const key = e.key.toLowerCase();
-      if(key === "y" || key === "s") decide(true); // sì
-      else if(key === "n") decide(false); // no
-      else if(key === "u") undo();
+    screenCover?.addEventListener("click", () => {
+      if (state.phase !== "cover") return;
+      state.phase = "categories";
+      updateUI();
     });
 
-    // stato iniziale
+    screenCover?.addEventListener("keydown", (e) => {
+      if (state.phase !== "cover") return;
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        state.phase = "categories";
+        updateUI();
+      }
+    });
+
+    btnToStartScreen?.addEventListener("click", () => {
+      state.phase = "prestart";
+      updateUI();
+    });
+
+    btnStart?.addEventListener("click", startDeck);
+    btnReveal?.addEventListener("click", revealFirstCard);
+    btnYes?.addEventListener("click", () => decide(true));
+    btnNo?.addEventListener("click", () => decide(false));
+    btnUndo?.addEventListener("click", undo);
+    btnAnalyze?.addEventListener("click", analyzeWithAI);
+    btnRestart?.addEventListener("click", () => {
+      state.order = [];
+      state.idx = 0;
+      state.decisions.clear();
+      state.undoStack = [];
+      state.results = null;
+      state.phase = "cover";
+      if (aiBox) aiBox.style.display = "none";
+      if (aiOutput) aiOutput.textContent = "{ }";
+      updateUI();
+    });
+
+    activeCard?.addEventListener("pointerdown", handlePointerDown);
+    activeCard?.addEventListener("pointermove", handlePointerMove);
+    activeCard?.addEventListener("pointerup", handlePointerEnd);
+    activeCard?.addEventListener("pointercancel", handlePointerEnd);
+    activeCard?.addEventListener("pointerleave", (e) => {
+      if (dragState.active) handlePointerEnd(e);
+    });
+
+    window.addEventListener("keydown", (e) => {
+      const key = e.key.toLowerCase();
+      if (state.phase === "cover" && (key === "enter" || key === " ")) {
+        state.phase = "categories";
+        updateUI();
+        return;
+      }
+      if (state.phase === "categories" && (key === "enter" || key === " ")) {
+        state.phase = "prestart";
+        updateUI();
+        return;
+      }
+      if (state.phase === "prestart" && (key === "enter" || key === " ")) {
+        startDeck();
+        return;
+      }
+      if (state.phase === "guide" && (key === "enter" || key === " ")) {
+        revealFirstCard();
+        return;
+      }
+      if (state.phase !== "playing") return;
+      if (key === "arrowright" || key === "y" || key === "s") decide(true);
+      else if (key === "arrowleft" || key === "n") decide(false);
+      else if (key === "u" || key === "backspace") undo();
+    });
+
     updateUI();
   </script>
 </body>
